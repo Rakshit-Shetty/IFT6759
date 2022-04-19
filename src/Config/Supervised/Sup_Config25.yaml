@@ -1,24 +1,28 @@
 ---
 # "super" - supervised learning, "semi" - semi supervised learning, "shot" - few shot learning
+num: 25
 task: "super"
 
 data: "cifar10"
-model: "resnet"
+model: "resnet20"
 augment: 
-    - "Flip"
-
+    - "Cutout"
+    - "Cutmix"
+    - "Mixup"
 
 aug_strength:
-    - 1
+    - 0.4
+    - 0.4
+    - 0.2
 
 eval:
     "Acc"
        
-batch_size: 256
+batch_size: 120
 learning_rate: 0.1
-epoch: 100
-optimizer: "adam"
-momentum: 0.5
-weight_decay: 0.001
+momentum: 0.9
+epoch: 160
+optimizer: "sgd"
+weight_decay: 0.0005
 seed: 6759
 

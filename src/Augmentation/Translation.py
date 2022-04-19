@@ -15,22 +15,29 @@ import torch
 import torchvision
 import torchvision.transforms.functional as F
 
-def Aug(data,seed = 6759):
+def Aug(data,labels):
     
-    torch.manual_seed(seed)
-    prob = torch.rand(3)
+    #torch.manual_seed(seed)
+    #prob = torch.rand(4)
+    prob = torch.rand(1)
     aug_data = data
+    #aug_data = []
     
     for i in range(len(prob)):
         
         if prob[i]<0.3333: 
             aug_data = torch.cat((aug_data,F.affine(data,translate=[torch.randint(-16, 16,(1,)),0],angle=0,scale=1,shear=0)))
+            #aug_data.append(F.affine(data,translate=[torch.randint(-16, 16,(1,)),0],angle=0,scale=1,shear=0))
             
         elif prob[i]>0.6666:
             aug_data = torch.cat((aug_data,F.affine(data,translate=[0,torch.randint(-16, 16,(1,))],angle=0,scale=1,shear=0)))
+            #aug_data.append(F.affine(data,translate=[0,torch.randint(-16, 16,(1,))],angle=0,scale=1,shear=0))
         
         else:
-            temp = F.vflip(data)
             aug_data = torch.cat((aug_data,F.affine(data,translate=[torch.randint(-16, 16,(1,)),torch.randint(-16, 16,(1,))],angle=0,scale=1,shear=0)))
+            #aug_data.append(F.affine(data,translate=[torch.randint(-16, 16,(1,)),torch.randint(-16, 16,(1,))],angle=0,scale=1,shear=0))
     
-    return aug_data
+    #aug_data = torch.cat(aug_data)
+    aug_labels = torch.cat((labels,labels))
+    
+    return aug_data,aug_labels
